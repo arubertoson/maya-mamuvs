@@ -8,18 +8,17 @@ Maya.
 :license: MIT, see LICENSE for details
 """
 __author__ = "Marcus Albertsson <marcus.arubertoson@gmail.com>"
-__copyright__ = 'Copyright 2016 Marcus Albertsson'
+__copyright__ = "Copyright 2016 Marcus Albertsson"
 __url__ = "http://github.com/arubertoson/mamuvs"
-__version__ = "0.1.0"
+__version__ = "0.1.2"
 __license__ = "MIT"
 
 
 import os
 import json
 
-from mamuvs.align import *
-from mamuvs.texel_density import *
-from mamuvs.utils import *
+from mamuvs import align, texel
+from mamuvs.utils import tear_off, orient, translate, rotate, mirror
 
 
 class Config(dict):

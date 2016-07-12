@@ -9,39 +9,14 @@ from mampy.datatypes import Line2D
 from mampy.dgcontainers import SelectionList
 from mampy.dgcomps import MeshMap
 from mampy.utils import grouped, undoable, repeatable
+from mampy.computils import get_shells
 
 
 logger = logging.getLogger(__file__)
 logger.setLevel(logging.INFO)
 
 
-def get_shells(components=None):
-    """
-    Collect selected uv shells.
-    """
-    s = components or mampy.selected()
-    if not s:
-        h = mampy.ls(hl=True)
-        if not h:
-            return logger.warn('Nothing selected.')
-        s.extend(h)
-
-    shells = SelectionList()
-    for c in s.itercomps():
-        if not c:
-            print 'test'
-            c = MeshMap(c.dagpath).get_complete()
-        else:
-            c = c.to_map()
-
-        count, array = c.mesh.getUvShellsIds()
-        wanted = set([array[idx] for idx in c.indices])
-
-        for each in wanted:
-            shell = MeshMap.create(c.dagpath)
-            shell.add([idx for idx, num in enumerate(array) if num == each])
-            shells.append(shell)
-    return list(shells.itercomps())
+__all__ = ['tear_off', 'orient', 'translate', 'rotate', 'mirror']
 
 
 @undoable

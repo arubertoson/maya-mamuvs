@@ -20,6 +20,10 @@ logger.setLevel(logging.DEBUG)
 __all__ = ['get_average_texel_density', 'get_texel_density', 'set_texel_density']
 
 
+class TexelDensity(object):
+    """Qt class"""
+
+
 class UV3DArea(object):
 
     def __init__(self, comp):
@@ -104,17 +108,17 @@ def get_areas():
     return [UV3DArea(c) for c in s.itercomps()]
 
 
-def get_average_texel_density(areas, texture_size):
+def get_average_density(areas, texture_size):
     return (sum([a.ratio for a in areas]) / len(areas)) * texture_size
 
 
-def get_texel_density(areas=None, texture_size=1024):
+def get_density(areas=None, texture_size=1024):
     return sum([a.ratio for a in areas or get_areas()]) * texture_size
 
 
 @undoable
 @repeatable
-def set_texel_density(shell=True, target_density=0, texture_size=1024):
+def set_density(shell=True, target_density=0, texture_size=1024):
     if shell:
         areas = [UV3DArea(c) for c in get_shells()]
     else:
@@ -124,7 +128,7 @@ def set_texel_density(shell=True, target_density=0, texture_size=1024):
         areas = [UV3DArea(c) for c in get_shells(components)]
 
     if target_density == 0:
-        target_density = get_average_texel_density(areas, texture_size)
+        target_density = get_average_density(areas, texture_size)
 
     print areas
     for area in areas:
@@ -135,3 +139,4 @@ def set_texel_density(shell=True, target_density=0, texture_size=1024):
         print uvs
         point = uvs.bounding_box.center
         uvs.translate(su=scale_value, sv=scale_value, pu=point.u, pv=point.v)
+

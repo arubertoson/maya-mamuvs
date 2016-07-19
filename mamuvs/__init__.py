@@ -17,9 +17,6 @@ __license__ = "MIT"
 import os
 import json
 
-from mamuvs import align, texel
-from mamuvs.utils import tear_off, orient, translate, rotate, mirror
-
 
 class Config(dict):
     """
@@ -28,11 +25,11 @@ class Config(dict):
     Written to make mamprefs isolated from the userPref file.
     """
     def __init__(self, file_=None):
-        _config_file = file_ or os.path.join(cwd, config_file_name)
-        with open(_config_file, 'rb') as f:
+        config_file = file_ or os.path.join(cwd, config_file_name)
+        with open(config_file, 'rb') as f:
             data = json.loads(f.read())
 
-        self._config_file = _config_file
+        self.config_file = config_file
         super(Config, self).__init__(data)
 
     def __setitem__(self, key, value):
@@ -40,10 +37,18 @@ class Config(dict):
         self.dump()
 
     def dump(self):
-        with open(self._config_file, 'wb') as f:
+        with open(self.config_file, 'wb') as f:
             json.dump(self, f, indent=4, sort_keys=True)
 
 
-config = Config()
 config_file_name = '.mamuvs'
 cwd = os.path.abspath(os.path.dirname(__file__))
+config = Config()
+
+
+from mamuvs import align, texel
+from mamuvs.utils import tear_off, orient, translate, rotate, mirror
+
+
+if __name__ == '__main__':
+    print config

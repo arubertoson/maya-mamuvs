@@ -97,5 +97,35 @@ def mirror(mode):
         shell.translate(**{mirror: -1, 'pu': point.u, 'pv': point.v})
 
 
+def shell_border_edges_to_hard():
+    """
+    Sets uv border edges on a mesh has hard, and everythign else as soft.
+    """
+    objList = cmds.ls(sl=True, o=True)
+    finalBorder = []
+
+    for subObj in objList:
+        cmds.select(subObj, r=True)
+        cmds.polyNormalPerVertex(ufn=True)
+        cmds.polySoftEdge(subObj, a=180, ch=1)
+        cmds.select(subObj + '.map[*]', r=True)
+
+        polySelectBorderShell(borderOnly=True)
+
+        uvBorder = cmds.polyListComponentConversion(te=True, internal=True)
+        uvBorder = cmds.ls(uvBorder, fl=True)
+
+        for curEdge in uvBorder:
+            edgeUVs = cmds.polyListComponentConversion(curEdge, tuv=True)
+            edgeUVs = cmds.ls(edgeUVs, fl=True)
+
+            if len(edgeUVs) > 2:
+                finalBorder.append(curEdge)
+
+        cmds.polySoftEdge(finalBorder, a=0, ch=1)
+
+    cmds.select(objList)
+
+
 if __name__ == '__main__':
     pass

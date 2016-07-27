@@ -46,7 +46,8 @@ cwd = os.path.abspath(os.path.dirname(__file__))
 config = Config()
 
 
-from mamuvs import align, texel
+from mamuvs import texel
+from mamuvs.align import align, scalefit, distribute, space
 from mamuvs.utils import tear_off, orient, translate, rotate, mirror
 
 
